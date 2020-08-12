@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+</head>
+<body>
+<canvas width="200" height="200" id="triangle"></canvas>
+
+<canvas width="200" height="200" id="ellipse"></canvas>
+
+<canvas width="200" height="200" id="star"></canvas>
+
+<script>
+    let drawTriangle = () => {
+        let canvas = document.getElementById("triangle");
+        let context = canvas.getContext("2d");
+
+        const side = 100;
+        const width = canvas.width;
+        let high = Math.sqrt(Math.pow(side, 2) - Math.pow(50, 2));
+
+        let top = {
+            x: width / 2,
+            y: width / 2 - high / 2
+        };
+
+        let left = {
+            x: width / 2 - high / 2,
+            y: width / 2 + high / 2
+        };
+
+        let right = {
+            x: width / 2 + high / 2,
+            y: width / 2 + high / 2
+        };
+
+        context.beginPath();
+        context.moveTo(top.x, top.y);
+        context.lineTo(right.x, right.y);
+        context.lineTo(left.x, left.y);
+        context.fillStyle = "orange";
+        context.fill();
+        context.closePath();
+    };
+
+    let drawEllipse = () => {
+        let canvas = document.getElementById("ellipse");
+        let context = canvas.getContext('2d');
+
+        context.beginPath();
+        context.ellipse(100, 100, 60, 40, 0, 0, Math.PI * 2);
+        context.fillStyle = "orange";
+        context.fill();
+    };
+
+    let drawStar = () => {
+        let canvas = document.getElementById("star");
+        let context = canvas.getContext('2d');
+
+        let R = 50;
+        let convert = (num) => num * Math.PI / 180;
+        let OuterPoint = [];
+        for (let i = 0; i < 5; i++) {
+            OuterPoint[i] = {};
+            OuterPoint[i].x = R * Math.cos(convert(72 * i));
+            OuterPoint[i].y = R * Math.sin(convert(72 * i));
+        }
+        let InnerPoint = [];
+        let r = R * Math.sin(convert(18)) / Math.sin(convert(36));
+        for (let i = 0; i < 5; i++) {
+            InnerPoint[i] = {};
+            InnerPoint[i].x = r * Math.cos(convert(72 * i + 36));
+            InnerPoint[i].y = r * Math.sin(convert(72 * i + 36));
+        }
+
+        context.beginPath();
+        context.translate(100, 100);
+        context.rotate(convert(-18));
+        context.moveTo(OuterPoint[0].x, OuterPoint[0].y);
+        context.lineTo(InnerPoint[0].x, InnerPoint[0].y);
+
+        for (let i = 1; i < OuterPoint.length; i++) {
+            context.lineTo(OuterPoint[i].x, OuterPoint[i].y);
+            context.lineTo(InnerPoint[i].x, InnerPoint[i].y);
+        }
+
+        context.fillStyle = "orange";
+        context.fill();
+        context.closePath();
+    };
+
+    drawTriangle();
+    drawEllipse();
+    drawStar();
+</script>
+</body>
+</html>

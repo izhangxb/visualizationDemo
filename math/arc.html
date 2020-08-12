@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<canvas width="500" height="500"/>
+
+
+<script>
+
+    const TAU_SEGMENTS = 60;
+    const TAU = Math.PI * 2;
+
+    function arc(x0, y0, radius, startAng = 0, endAng = Math.PI * 2) {
+        const ang = Math.min(TAU, endAng - startAng);
+        const ret = ang === TAU ? [] : [[x0, y0]];
+        const segments = Math.round(TAU_SEGMENTS * ang / TAU);
+        for (let i = 0; i <= segments; i++) {
+            const x = x0 + radius * Math.cos(startAng + ang * i / segments);
+            const y = y0 + radius * Math.sin(startAng + ang * i / segments);
+            ret.push([x, y]);
+        }
+        return ret;
+    }
+    let canvas = document.querySelector('canvas');
+    let ctx = canvas.getContext("2d");
+    let dots = arc(200, 200, 100, Math.PI/4, Math.PI);
+
+    ctx.beginPath();
+    ctx.strokeStyle = '#c72c35';
+    ctx.moveTo(...dots[1]);
+    for (let i = 1; i < dots.length; i++) {
+        ctx.lineTo(...dots[i]);
+    }
+    ctx.stroke();
+    ctx.closePath();
+
+</script>
+</body>
+</html>
